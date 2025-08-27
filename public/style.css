@@ -1,0 +1,130 @@
+#playBtn, #pauseBtn {
+  display: inline-block;
+  padding: 10px 28px;
+  margin-right: 12px;
+  font-size: 1.15em;
+  font-weight: bold;
+  border-radius: 24px;
+  border: 2px solid #666;
+  background: #222;
+  color: #f2f2f2;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+}
+#pauseBtn {
+  border-color: #d53a3a;
+  color: #d53a3a;
+}
+#playBtn:hover {
+  background: #444;
+  color: #fff;
+}
+#pauseBtn:hover {
+  background: #d53a3a;
+  color: #fff;
+}
+#currentTrack {
+  display: flex;
+  align-items: center;
+  background: #222;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  border: 2.5px solid #444;
+  padding: 32px 28px;
+  margin-bottom: 32px;
+  min-width: 900px;
+  max-width: 98vw;
+  min-height: 140px;
+  box-sizing: border-box;
+}
+#currentTrack b {
+  font-size: 2.1em;
+  color: #f2f2f2;
+  word-break: break-all;
+  max-width: 320px;
+  display: inline-block;
+}
+#currentTrack img {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  margin-right: 32px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+}
+#currentTrack b {
+  font-size: 2.1em;
+  color: #3a7bd5;
+}
+#currentTrack .track-artist {
+  font-size: 1.2em;
+  color: #bbb;
+  margin-top: 8px;
+}
+#currentTrack.box, #playerBox.box {
+  border: 1.5px solid #444;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background: #181818;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+
+body {
+  background: linear-gradient(120deg, #222 0%, #111 100%);
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  color: #f2f2f2;
+}
+
+.main-layout {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 32px;
+  min-height: 100vh;
+}
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+  min-width: 400px;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 16px;
+}
+#favoritesResults {
+  margin-top: 12px;
+}
+.track {
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  min-height: 64px;
+  box-sizing: border-box;
+}
+.track img {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  margin-right: 16px;
+  object-fit: cover;
+}
+.track-info {
+  flex: 1;
+}
+.track-title {
+  font-weight: bold;
+  color: #f2f2f2;
+}
+.track-artist {
+  color: #bbb;
+  font-size: 0.95em;
+}

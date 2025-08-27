@@ -1,0 +1,14 @@
+{
+  "name": "spotifyuser",
+  "version": "1.0.0",
+  "description": "Spotify操作Webアプリ（Node.jsベース）",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.5"
+  }
+}
