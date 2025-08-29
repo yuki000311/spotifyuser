@@ -34,6 +34,11 @@ window.onload = () => {
     accessToken = params.get('access_token');
     showCurrentTrack();
     showFavorites();
+    // 30秒ごとに自動更新
+    setInterval(() => {
+      showCurrentTrack();
+      showFavorites();
+    }, 30000);
   } else {
     window.location.href = '/login';
   }

@@ -23,108 +23,143 @@
   background: #d53a3a;
   color: #fff;
 }
+#currentTrackBox {
+  background: #222;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px #0002;
+  width: 900px;
+  max-width: 98vw;
+  margin: 32px auto 24px auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 #currentTrack {
   display: flex;
   align-items: center;
-  background: #222;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
-  border: 2.5px solid #444;
-  padding: 32px 28px;
-  margin-bottom: 32px;
-  min-width: 900px;
-  max-width: 98vw;
-  min-height: 140px;
-  box-sizing: border-box;
-}
-#currentTrack b {
-  font-size: 2.1em;
-  color: #f2f2f2;
-  word-break: break-all;
-  max-width: 320px;
-  display: inline-block;
+  min-width: 400px;
+  max-width: 100%;
+  min-height: 120px;
+  margin-bottom: 16px;
 }
 #currentTrack img {
   width: 120px;
   height: 120px;
+  object-fit: cover;
   border-radius: 12px;
-  margin-right: 32px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+  margin-right: 24px;
 }
-#currentTrack b {
-  font-size: 2.1em;
-  color: #3a7bd5;
+#currentTrackInfo {
+  flex: 1;
 }
-#currentTrack .track-artist {
-  font-size: 1.2em;
-  color: #bbb;
+#currentTrackBtns {
+  display: flex;
+  gap: 16px;
   margin-top: 8px;
 }
-#currentTrack.box, #playerBox.box {
-  border: 1.5px solid #444;
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 16px;
-  background: #181818;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+.btn-play, .btn-pause {
+  background: #333;
+  color: #fff;
+  border: 2px solid #444;
+  border-radius: 8px;
+  padding: 8px 24px;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
 }
-
-body {
-  background: linear-gradient(120deg, #222 0%, #111 100%);
-  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  color: #f2f2f2;
-}
-
-.main-layout {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 32px;
-  min-height: 100vh;
-}
-.main-content {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  flex: 1;
-  min-width: 400px;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  margin: 16px;
+.btn-play:hover { background: #1976d2; color: #fff; border-color: #1976d2; }
+.btn-pause:hover { background: #d32f2f; color: #fff; border-color: #d32f2f; }
+#favoritesBox {
+  width: 900px;
+  max-width: 98vw;
+  margin: 0 auto 32px auto;
+  background: #222;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px #0002;
+  padding: 24px;
 }
 #favoritesResults {
-  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 .track {
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 12px 16px;
-  margin-bottom: 10px;
   display: flex;
   align-items: center;
-  min-height: 64px;
-  box-sizing: border-box;
+  background: #181818;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px #0002;
+  padding: 12px;
+  min-height: 80px;
+  transition: background 0.2s;
+}
+.track:hover {
+  background: #282828;
 }
 .track img {
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
   border-radius: 8px;
   margin-right: 16px;
-  object-fit: cover;
 }
 .track-info {
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .track-title {
+  font-size: 1.1em;
   font-weight: bold;
-  color: #f2f2f2;
+  color: #fff;
+  cursor: pointer;
+  margin-bottom: 4px;
+  transition: color 0.2s;
+}
+.track-title:hover {
+  color: #1db954;
 }
 .track-artist {
-  color: #bbb;
   font-size: 0.95em;
+  color: #bbb;
+}
+body {
+  background: #181818;
+  color: #fff;
+  font-family: 'Segoe UI', 'Meiryo', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+@media (max-width: 600px) {
+  #currentTrackBox, #favoritesBox {
+    width: 98vw;
+    padding: 12px;
+    margin: 12px auto;
+  }
+  #currentTrack {
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+    min-height: 0;
+  }
+  #currentTrack img {
+    width: 80px;
+    height: 80px;
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+  #favoritesResults .track {
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 0;
+    padding: 8px;
+  }
+  .track img {
+    width: 48px;
+    height: 48px;
+    margin-right: 0;
+    margin-bottom: 6px;
+  }
 }
