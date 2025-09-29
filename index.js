@@ -3,6 +3,7 @@ const express = require('express');
 const axios = require('axios');
 const fs = require('fs');
 const https = require('https');
+const { withBackoff, createSpotifyRequest } = require('./backoff');
 const app = express();
 const port = 3000;
 
@@ -25,7 +26,7 @@ app.get('/callback', async (req, res) => {
   const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
   const redirect_uri = process.env.SPOTIFY_REDIRECT_URI;
   try {
-    const tokenRes = await axios.post(
+    const tokenRequestFn = () => axios.post(
       'https://accounts.spotify.com/api/token',
       new URLSearchParams({
         grant_type: 'authorization_code',
@@ -36,6 +37,8 @@ app.get('/callback', async (req, res) => {
       }),
       { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     );
+    
+    const tokenRes = await withBackoff(tokenRequestFn);
     const { access_token } = tokenRes.data;
     res.redirect('/?access_token=' + access_token);
   } catch (err) {
@@ -49,10 +52,14 @@ app.get('/favorites', async (req, res) => {
   const offset = Number(req.query.offset) || 0;
   if (!access_token) return res.status(400).send('アクセストークンが必要です');
   try {
-    const favRes = await axios.get('https://api.spotify.com/v1/me/tracks', {
-      headers: { Authorization: `Bearer ${access_token}` },
-      params: { limit: 50, offset }
-    });
+    const favRequestFn = createSpotifyRequest(
+      'GET',
+      'https://api.spotify.com/v1/me/tracks',
+      { params: { limit: 50, offset } },
+      access_token
+    );
+    
+    const favRes = await withBackoff(favRequestFn);
     res.json(favRes.data);
   } catch (err) {
     res.status(400).send('お気に入り取得失敗: ' + err.message);
@@ -64,9 +71,14 @@ app.get('/current', async (req, res) => {
   const access_token = req.query.access_token;
   if (!access_token) return res.status(400).send('アクセストークンが必要です');
   try {
-    const currentRes = await axios.get('https://api.spotify.com/v1/me/player/currently-playing', {
-      headers: { Authorization: `Bearer ${access_token}` }
-    });
+    const currentRequestFn = createSpotifyRequest(
+      'GET',
+      'https://api.spotify.com/v1/me/player/currently-playing',
+      {},
+      access_token
+    );
+    
+    const currentRes = await withBackoff(currentRequestFn);
     res.json(currentRes.data);
   } catch (err) {
     res.status(400).send('再生中取得失敗: ' + err.message);
@@ -78,11 +90,14 @@ app.put('/play', async (req, res) => {
   const { access_token, track_uri } = req.query;
   if (!access_token) return res.status(400).send('アクセストークンが必要です');
   try {
-    await axios.put(
+    const playRequestFn = createSpotifyRequest(
+      'PUT',
       'https://api.spotify.com/v1/me/player/play',
-      track_uri ? { uris: [track_uri] } : {},
-      { headers: { Authorization: `Bearer ${access_token}` } }
+      { data: track_uri ? { uris: [track_uri] } : {} },
+      access_token
     );
+    
+    await withBackoff(playRequestFn);
     res.send('再生しました');
   } catch (err) {
     res.status(400).send('再生失敗: ' + err.message);
@@ -94,14 +109,37 @@ app.put('/pause', async (req, res) => {
   const access_token = req.query.access_token;
   if (!access_token) return res.status(400).send('アクセストークンが必要です');
   try {
-    await axios.put(
+    const pauseRequestFn = createSpotifyRequest(
+      'PUT',
       'https://api.spotify.com/v1/me/player/pause',
-      {},
-      { headers: { Authorization: `Bearer ${access_token}` } }
+      { data: {} },
+      access_token
     );
+    
+    await withBackoff(pauseRequestFn);
     res.send('停止しました');
   } catch (err) {
     res.status(400).send('停止失敗: ' + err.message);
+  }
+});
+
+// 再生位置シーク
+app.put('/seek', async (req, res) => {
+  const { access_token, position_ms } = req.query;
+  if (!access_token) return res.status(400).send('アクセストークンが必要です');
+  if (!position_ms) return res.status(400).send('再生位置が必要です');
+  try {
+    const seekRequestFn = createSpotifyRequest(
+      'PUT',
+      'https://api.spotify.com/v1/me/player/seek',
+      { params: { position_ms: parseInt(position_ms) } },
+      access_token
+    );
+    
+    await withBackoff(seekRequestFn);
+    res.send('シークしました');
+  } catch (err) {
+    res.status(400).send('シーク失敗: ' + err.message);
   }
 });
 
